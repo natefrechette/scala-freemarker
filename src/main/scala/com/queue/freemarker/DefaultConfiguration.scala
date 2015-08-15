@@ -1,14 +1,10 @@
-package ru.circumflex
-package freemarker
+package com.queue.freemarker
 
-import net.liftweb._
-import util._
-import common._
+import java.io.File
 
-import _root_.freemarker.template._
-import _root_.freemarker.core.Environment
 import _root_.freemarker.cache._
-import java.io.StringWriter
+import _root_.freemarker.template._
+import com.typesafe.scalalogging.LazyLogging
 
 /*!# Default FreeMarker Configuration
 
@@ -24,7 +20,7 @@ You can alter template loading dynamically using `addLoader` and `setLoaders`
 methods, but in general this is only acceptable in initialization code. In any
 case make sure you know what you are doing first.
 */
-class DefaultConfiguration extends Configuration with Loggable {
+class DefaultConfiguration(templatePath: String) extends Configuration with LazyLogging {
 
   // Loaders
 
@@ -35,6 +31,7 @@ class DefaultConfiguration extends Configuration with Loggable {
     setTemplateLoader(new MultiTemplateLoader(loaders.toArray))
     this
   }
+
   def setLoaders(ldrs: TemplateLoader*): this.type = {
     _loaders = ldrs.toList
     setTemplateLoader(new MultiTemplateLoader(loaders.toArray))
@@ -42,17 +39,19 @@ class DefaultConfiguration extends Configuration with Loggable {
   }
 
   // Defaults
-
   setObjectWrapper(new ScalaObjectWrapper())
   setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER)
   setDefaultEncoding("utf-8")
+  addLoader(new FileTemplateLoader(new File(templatePath)))
+  addLoader(new StringTemplateLoader)
 
-  try {
-    addLoader(new ClassTemplateLoader(this.getClass, "/templates"))
-  } catch {
-    case e: Exception =>
-      logger.warn("Not running in webapp context.")
-  }
-  addLoader(new ClassTemplateLoader(getClass, "/"))
+  //  try {
+//    addLoader(new ClassTemplateLoader(this.getClass, "templates"))
+//  } catch {
+//    case e: Exception =>
+//      logger.warn("Not running in webapp context.")
+//  }
+//
+//  addLoader(new ClassTemplateLoader(getClass, "/Developer/dropsource/scala-freemarker/templates"))
 
 }

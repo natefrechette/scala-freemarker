@@ -1,11 +1,12 @@
-package ru.circumflex
-package freemarker
+package com.queue.freemarker
+
+import java.lang.reflect.{Field, Method, Modifier}
+import java.util.Date
 
 import _root_.freemarker.template._
-import java.util.Date
 import org.apache.commons.beanutils.MethodUtils
-import xml._
-import java.lang.reflect.{Modifier, Field, Method}
+
+import scala.xml._
 
 class ScalaObjectWrapper extends ObjectWrapper {
   override def wrap(obj: Any): TemplateModel = obj match {
@@ -53,6 +54,7 @@ class ScalaMapWrapper(val map: collection.Map[String, _], wrapper: ObjectWrapper
   def values = new ScalaIterableWrapper(map.values, wrapper)
   val keys = new ScalaIterableWrapper(map.keys, wrapper)
   def size = map.size
+
 }
 
 class ScalaIterableWrapper[T](val it: Iterable[T], wrapper: ObjectWrapper)
@@ -108,10 +110,10 @@ class ScalaXmlWrapper(val node: NodeSeq, val wrapper: ObjectWrapper)
   // due to immutability of Scala XML API, nodes are unaware of their parents.
   def getParentNode: TemplateNodeModel = new ScalaXmlWrapper(null, wrapper)
   // as hash
-  def isEmpty: Boolean = node.size == 0
+  def isEmpty: Boolean = node.isEmpty
   def get(key: String): TemplateModel = {
     val children = node \ key
-    if (children.size == 0) wrapper.wrap(None)
+    if (children.isEmpty) wrapper.wrap(None)
     if (children.size == 1) wrapper.wrap(children(0))
     else wrapper.wrap(children)
   }
@@ -152,7 +154,7 @@ class ScalaBaseWrapper(val obj: Any, val wrapper: ObjectWrapper)
       }
     if (resolveMethods)
       findMethod(objectClass, key) match {
-        case Some(method) if (method.getParameterTypes.length == 0) =>
+        case Some(method) if method.getParameterTypes.isEmpty =>
           return wrapper.wrap(method.invoke(obj))
         case Some(method) =>
           return new ScalaMethodWrapper(obj, method.getName, wrapper)

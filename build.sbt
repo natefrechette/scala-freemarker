@@ -1,24 +1,35 @@
-name := "circumflex-ftl"
+name := "scala-freemarker"
 
-organization := "ru.circumflex"
+organization := "com.queue"
 
-version := "2.1.1"
+isSnapshot := true
 
-scalaVersion := "2.9.1"
+version := "0.0.2"
+
+scalaVersion := "2.11.7"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
-resolvers ++= Seq ("scala-tools snapshots" at "http://scala-tools.org/repo-snapshots")
+resolvers ++= Seq(
+  "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/"
+)
 
-publishTo := Some(Resolver.file("Github Pages", Path.userHome / "projects" / "maven2" asFile) (Patterns(true, Resolver.mavenStyleBasePattern)))
+libraryDependencies ++= Seq(
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.3",
+  "org.freemarker" % "freemarker" % "2.3.18",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
+  "commons-beanutils" % "commons-beanutils" % "1.8.0",
+  "org.apache.commons" % "commons-lang3" % "3.1" % "test"
+)
 
 publishMavenStyle := true
 
-libraryDependencies ++= Seq(
-  "org.freemarker"   		% 	"freemarker"  			% "2.3.18",
-  "net.liftweb"         	%% 	"lift-util"          	% "2.4-SNAPSHOT" 	% "compile",
-  "net.liftweb"         	%% 	"lift-common"          	% "2.4-SNAPSHOT" 	% "compile",
-  "commons-beanutils"   	% 	"commons-beanutils"     % "1.8.0",
-  "commons-io"   			% 	"commons-io"      		% "2.1",
-  "org.apache.commons"   	% 	"commons-lang3"      	% "3.1" 			% "test",
-  "org.scala-tools.testing" %% 	"specs" 				% "1.6.9" 			% "test")
+publishTo := {
+  val dropsource = "http://repo.dropsource.biz:8081/"
+  if (isSnapshot.value)
+    Some("snapshots" at dropsource + "artifactory/scala-snapshots")
+  else
+    Some("releases" at dropsource + "artifactory/scala-releases")
+}
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")

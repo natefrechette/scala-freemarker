@@ -1,12 +1,9 @@
-package ru.circumflex
-
-import net.liftweb._
-import util._
-import common._
+package com.queue
 
 import java.io._
 
 import _root_.freemarker.template._
+import com.typesafe.scalalogging.LazyLogging
 
 /*!# The `ftl` package
 
@@ -19,9 +16,9 @@ You should import this package to use Circumflex FreeMarker Helper in your appli
 
     import ru.circumflex.freemarker._
  */
-package object freemarker extends Loggable {
+package object freemarker extends LazyLogging {
 
-  val ftlConfig: Configuration = new DefaultConfiguration
+  val ftlConfig: Configuration = new DefaultConfiguration("/Developer/dropsource/scala-freemarker/templates")
 
   def ftl2string(template: String, root: Any): String = {
     val result = new StringWriter
@@ -46,8 +43,9 @@ package object freemarker extends Loggable {
     maps); by default the delegation does not occur (`null` is returned if resolving fails).
 
   */
-  val resolveFields = Props.getBool("ftl.wrapper.resolveFields", true)
-  val resolveMethods = Props.getBool("ftl.wrapper.resolveMethods", true)
-  val delegateToDefault = Props.getBool("ftl.wrapper.delegateToDefault", false)
+  // Props is lifts Config.getBool
+  val resolveFields = true //Props.getBool("ftl.wrapper.resolveFields", true)
+  val resolveMethods = true //Props.getBool("ftl.wrapper.resolveMethods", true)
+  val delegateToDefault = false //Props.getBool("ftl.wrapper.delegateToDefault", false)
 
 }
