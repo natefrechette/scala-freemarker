@@ -4,7 +4,7 @@ organization := "com.queue"
 
 isSnapshot := true
 
-version := "0.0.2"
+version := "0.0.5"
 
 scalaVersion := "2.11.7"
 
@@ -16,7 +16,7 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "1.0.3",
-  "org.freemarker" % "freemarker" % "2.3.18",
+  "org.freemarker" % "freemarker" % "2.3.23",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "commons-beanutils" % "commons-beanutils" % "1.8.0",
   "org.apache.commons" % "commons-lang3" % "3.1" % "test"

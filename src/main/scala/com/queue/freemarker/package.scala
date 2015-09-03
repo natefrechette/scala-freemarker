@@ -1,8 +1,5 @@
 package com.queue
 
-import java.io._
-
-import _root_.freemarker.template._
 import com.typesafe.scalalogging.LazyLogging
 
 /*!# The `ftl` package
@@ -18,13 +15,13 @@ You should import this package to use Circumflex FreeMarker Helper in your appli
  */
 package object freemarker extends LazyLogging {
 
-  val ftlConfig: Configuration = new DefaultConfiguration("/Developer/dropsource/scala-freemarker/templates")
-
-  def ftl2string(template: String, root: Any): String = {
-    val result = new StringWriter
-    ftlConfig.getTemplate(template).process(root, result)
-    result.toString
-  }
+//  val ftlConfig: Configuration = new DefaultConfiguration("/Developer/dropsource/scala-freemarker/templates")
+//
+//  def ftl2string(template: String, root: Any): String = {
+//    val result = new StringWriter
+//    ftlConfig.getTemplate(template).process(root, result)
+//    result.toString
+//  }
 
   /*!# Configuring Object Wrapper
 

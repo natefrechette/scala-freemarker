@@ -4,6 +4,7 @@ import java.io.File
 
 import _root_.freemarker.cache._
 import _root_.freemarker.template._
+import _root_.freemarker.template.Configuration.VERSION_2_3_23
 import com.typesafe.scalalogging.LazyLogging
 
 /*!# Default FreeMarker Configuration
@@ -20,10 +21,9 @@ You can alter template loading dynamically using `addLoader` and `setLoaders`
 methods, but in general this is only acceptable in initialization code. In any
 case make sure you know what you are doing first.
 */
-class DefaultConfiguration(templatePath: String) extends Configuration with LazyLogging {
+class DefaultConfiguration(templatePath: String) extends Configuration(VERSION_2_3_23) with LazyLogging {
 
   // Loaders
-
   protected var _loaders: Seq[TemplateLoader] = Nil
   def loaders = _loaders
   def addLoader(loader: TemplateLoader): this.type = {
@@ -43,15 +43,5 @@ class DefaultConfiguration(templatePath: String) extends Configuration with Lazy
   setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER)
   setDefaultEncoding("utf-8")
   addLoader(new FileTemplateLoader(new File(templatePath)))
-  addLoader(new StringTemplateLoader)
-
-  //  try {
-//    addLoader(new ClassTemplateLoader(this.getClass, "templates"))
-//  } catch {
-//    case e: Exception =>
-//      logger.warn("Not running in webapp context.")
-//  }
-//
-//  addLoader(new ClassTemplateLoader(getClass, "/Developer/dropsource/scala-freemarker/templates"))
 
 }
